@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
-import { Settings as SettingsIcon, Database, Users, Warehouse, Package, FileText } from 'lucide-react';
+import { Settings as SettingsIcon, Database, Users, Warehouse, Package, FileText, RefreshCw, Plus, X, Save } from 'lucide-react';
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState('master-data');
+  const [showAddWarehouse, setShowAddWarehouse] = useState(false);
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
+
+  const [newWarehouse, setNewWarehouse] = useState({
+    id: '',
+    name: '',
+    location: '',
+    status: 'active' as 'active' | 'inactive'
+  });
+
+  const [newUser, setNewUser] = useState({
+    name: '',
+    role: '',
+    email: '',
+    status: 'active' as 'active' | 'inactive'
+  });
 
   const sections = [
     { id: 'master-data', name: 'Master Data', icon: Database },
@@ -44,6 +61,68 @@ const Settings = () => {
       description: 'Import/export material master and costs'
     }
   ];
+
+  const handleSyncMasterData = async () => {
+    setSyncStatus('syncing');
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setSyncStatus('success');
+      setTimeout(() => setSyncStatus('idle'), 3000);
+    } catch (error) {
+      setSyncStatus('error');
+      setTimeout(() => setSyncStatus('idle'), 3000);
+    }
+  };
+
+  const handleAddWarehouse = () => {
+    if (!newWarehouse.name || !newWarehouse.location) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    const warehouseId = `WH-${String.fromCharCode(65 + warehouses.length)}`;
+    const warehouse = {
+      ...newWarehouse,
+      id: warehouseId
+    };
+    
+    // In a real app, this would update the warehouses state
+    console.log('Adding warehouse:', warehouse);
+    alert('Warehouse added successfully!');
+    
+    setNewWarehouse({
+      id: '',
+      name: '',
+      location: '',
+      status: 'active'
+    });
+    setShowAddWarehouse(false);
+  };
+
+  const handleAddUser = () => {
+    if (!newUser.name || !newUser.role || !newUser.email) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    const user = {
+      ...newUser,
+      id: users.length + 1
+    };
+    
+    // In a real app, this would update the users state
+    console.log('Adding user:', user);
+    alert('User added successfully!');
+    
+    setNewUser({
+      name: '',
+      role: '',
+      email: '',
+      status: 'active'
+    });
+    setShowAddUser(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -104,6 +183,27 @@ const Settings = () => {
                   </div>
                   <button className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
                     Manage Materials
+                  </button>
+                  <button 
+                    onClick={handleSyncMasterData}
+                    disabled={syncStatus === 'syncing'}
+                    className={`mt-2 w-full flex items-center justify-center space-x-2 py-2 px-4 rounded-md transition-colors ${
+                      syncStatus === 'syncing' 
+                        ? 'bg-gray-400 text-white cursor-not-allowed' 
+                        : syncStatus === 'success'
+                        ? 'bg-green-600 text-white'
+                        : syncStatus === 'error'
+                        ? 'bg-red-600 text-white'
+                        : 'bg-orange-600 text-white hover:bg-orange-700'
+                    }`}
+                  >
+                    <RefreshCw className={`w-4 h-4 ${syncStatus === 'syncing' ? 'animate-spin' : ''}`} />
+                    <span>
+                      {syncStatus === 'syncing' ? 'Syncing...' :
+                       syncStatus === 'success' ? 'Sync Complete' :
+                       syncStatus === 'error' ? 'Sync Failed' :
+                       'Sync Master Data'}
+                    </span>
                   </button>
                 </div>
 
