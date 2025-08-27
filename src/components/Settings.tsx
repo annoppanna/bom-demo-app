@@ -283,7 +283,14 @@ const Settings = () => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-gray-900">Warehouse Management</h3>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                <button 
+                  onClick={() => setShowAddWarehouse(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Warehouse</span>
+                </button>
+              </div>
                   Add Warehouse
                 </button>
               </div>
@@ -334,7 +341,14 @@ const Settings = () => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-gray-900">User Management</h3>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                <button 
+                  onClick={() => setShowAddUser(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add User</span>
+                </button>
+              </div>
                   Add User
                 </button>
               </div>
