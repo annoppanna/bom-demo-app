@@ -291,9 +291,6 @@ const Settings = () => {
                   <span>Add Warehouse</span>
                 </button>
               </div>
-                  Add Warehouse
-                </button>
-              </div>
               
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -347,9 +344,6 @@ const Settings = () => {
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add User</span>
-                </button>
-              </div>
-                  Add User
                 </button>
               </div>
               
