@@ -1,0 +1,335 @@
+import React, { useState } from 'react';
+import { Settings as SettingsIcon, Database, Users, Warehouse, Package, FileText } from 'lucide-react';
+
+const Settings = () => {
+  const [activeSection, setActiveSection] = useState('master-data');
+
+  const sections = [
+    { id: 'master-data', name: 'Master Data', icon: Database },
+    { id: 'users', name: 'User Management', icon: Users },
+    { id: 'warehouses', name: 'Warehouses', icon: Warehouse },
+    { id: 'products', name: 'Product Master', icon: Package },
+    { id: 'integrations', name: 'Integrations', icon: FileText },
+  ];
+
+  const warehouses = [
+    { id: 'WH-A', name: 'Main Warehouse', location: 'Building A', status: 'active' },
+    { id: 'WH-B', name: 'Cold Storage', location: 'Building B', status: 'active' },
+    { id: 'WH-C', name: 'Dry Storage', location: 'Building C', status: 'inactive' }
+  ];
+
+  const users = [
+    { id: 1, name: 'John Smith', role: 'Production Manager', email: 'john@company.com', status: 'active' },
+    { id: 2, name: 'Sarah Johnson', role: 'R&D Specialist', email: 'sarah@company.com', status: 'active' },
+    { id: 3, name: 'Mike Chen', role: 'Warehouse Supervisor', email: 'mike@company.com', status: 'active' }
+  ];
+
+  const integrations = [
+    {
+      name: 'RMS (Inventory System)',
+      status: 'connected',
+      lastSync: '2025-01-01T10:30:00Z',
+      description: 'Sync finished goods quantity and cost'
+    },
+    {
+      name: 'Sales Forecasting System',
+      status: 'disconnected',
+      lastSync: null,
+      description: 'Import sales forecast for production planning'
+    },
+    {
+      name: 'Material Master Database',
+      status: 'connected',
+      lastSync: '2025-01-01T09:15:00Z',
+      description: 'Import/export material master and costs'
+    }
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-900">Settings & Master Data</h2>
+      </div>
+
+      <div className="flex space-x-6">
+        {/* Sidebar */}
+        <div className="w-64 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="p-4">
+            <nav className="space-y-2">
+              {sections.map((section) => {
+                const Icon = section.icon;
+                return (
+                  <button
+                    key={section.id}
+                    onClick={() => setActiveSection(section.id)}
+                    className={`w-full flex items-center px-3 py-2 text-left rounded-md text-sm font-medium ${
+                      activeSection === section.id
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4 mr-3" />
+                    {section.name}
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200">
+          {activeSection === 'master-data' && (
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">Master Data Management</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="border border-gray-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <Package className="w-6 h-6 text-[#8F262B]" />
+                    <h4 className="text-md font-medium text-gray-900">Material Master</h4>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Manage raw materials, costs, and specifications
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Total Materials:</span>
+                      <span className="font-medium">156</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Last Updated:</span>
+                      <span className="font-medium">2025-01-01</span>
+                    </div>
+                  </div>
+                  <button className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+                    Manage Materials
+                  </button>
+                </div>
+
+                <div className="border border-gray-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <FileText className="w-6 h-6 text-[#8F262B]" />
+                    <h4 className="text-md font-medium text-gray-900">Product Master</h4>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Manage finished products and pricing
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Total Products:</span>
+                      <span className="font-medium">48</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Last Updated:</span>
+                      <span className="font-medium">2024-12-30</span>
+                    </div>
+                  </div>
+                  <button className="mt-4 w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">
+                    Manage Products
+                  </button>
+                </div>
+
+                <div className="border border-gray-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <SettingsIcon className="w-6 h-6 text-[#8F262B]" />
+                    <h4 className="text-md font-medium text-gray-900">System Configuration</h4>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Configure system settings and preferences
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Default Currency:</span>
+                      <span className="font-medium">USD</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Time Zone:</span>
+                      <span className="font-medium">UTC-5</span>
+                    </div>
+                  </div>
+                  <button className="mt-4 w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700">
+                    Configure System
+                  </button>
+                </div>
+
+                <div className="border border-gray-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <Database className="w-6 h-6 text-[#8F262B]" />
+                    <h4 className="text-md font-medium text-gray-900">Data Import/Export</h4>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Import and export data to external systems
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Last Import:</span>
+                      <span className="font-medium">2025-01-01</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Last Export:</span>
+                      <span className="font-medium">2024-12-31</span>
+                    </div>
+                  </div>
+                  <button className="mt-4 w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700">
+                    Manage Data
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeSection === 'warehouses' && (
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-gray-900">Warehouse Management</h3>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                  Add Warehouse
+                </button>
+              </div>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {warehouses.map((warehouse) => (
+                      <tr key={warehouse.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {warehouse.id}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {warehouse.name}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {warehouse.location}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            warehouse.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                          }`}>
+                            {warehouse.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
+                          <button className="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {activeSection === 'users' && (
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-gray-900">User Management</h3>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                  Add User
+                </button>
+              </div>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {users.map((user) => (
+                      <tr key={user.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {user.name}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {user.role}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {user.email}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            {user.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
+                          <button className="text-red-600 hover:text-red-900">Deactivate</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {activeSection === 'integrations' && (
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">System Integrations</h3>
+              
+              <div className="space-y-4">
+                {integrations.map((integration, index) => (
+                  <div key={index} className="border border-gray-200 rounded-lg p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h4 className="text-md font-medium text-gray-900">{integration.name}</h4>
+                        <p className="text-sm text-gray-600">{integration.description}</p>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          integration.status === 'connected' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        }`}>
+                          {integration.status}
+                        </span>
+                        <button className={`px-4 py-2 rounded-md text-sm font-medium ${
+                          integration.status === 'connected' 
+                            ? 'bg-red-600 text-white hover:bg-red-700' 
+                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                        }`}>
+                          {integration.status === 'connected' ? 'Disconnect' : 'Connect'}
+                        </button>
+                      </div>
+                    </div>
+                    {integration.lastSync && (
+                      <div className="text-sm text-gray-600">
+                        Last sync: {new Date(integration.lastSync).toLocaleString()}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeSection === 'products' && (
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">Product Master Data</h3>
+              <div className="text-center py-12">
+                <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600">Product master data management will be integrated with the main product catalog.</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Settings;
