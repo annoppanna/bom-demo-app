@@ -5,6 +5,10 @@ const Settings = () => {
   const [activeSection, setActiveSection] = useState('master-data');
   const [showAddWarehouse, setShowAddWarehouse] = useState(false);
   const [showAddUser, setShowAddUser] = useState(false);
+  const [showEditWarehouse, setShowEditWarehouse] = useState(false);
+  const [showEditUser, setShowEditUser] = useState(false);
+  const [editingWarehouse, setEditingWarehouse] = useState<any>(null);
+  const [editingUser, setEditingUser] = useState<any>(null);
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
 
   const [newWarehouse, setNewWarehouse] = useState({
@@ -124,6 +128,67 @@ const Settings = () => {
     setShowAddUser(false);
   };
 
+  const handleEditWarehouse = (warehouse: any) => {
+    setEditingWarehouse(warehouse);
+    setNewWarehouse({
+      id: warehouse.id,
+      name: warehouse.name,
+      location: warehouse.location,
+      status: warehouse.status
+    });
+    setShowEditWarehouse(true);
+  };
+
+  const handleUpdateWarehouse = () => {
+    if (!newWarehouse.name || !newWarehouse.location) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    // In a real app, this would update the warehouses state
+    console.log('Updating warehouse:', newWarehouse);
+    alert('Warehouse updated successfully!');
+    
+    setNewWarehouse({
+      id: '',
+      name: '',
+      location: '',
+      status: 'active'
+    });
+    setEditingWarehouse(null);
+    setShowEditWarehouse(false);
+  };
+
+  const handleEditUser = (user: any) => {
+    setEditingUser(user);
+    setNewUser({
+      name: user.name,
+      role: user.role,
+      email: user.email,
+      status: user.status
+    });
+    setShowEditUser(true);
+  };
+
+  const handleUpdateUser = () => {
+    if (!newUser.name || !newUser.role || !newUser.email) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    // In a real app, this would update the users state
+    console.log('Updating user:', newUser);
+    alert('User updated successfully!');
+    
+    setNewUser({
+      name: '',
+      role: '',
+      email: '',
+      status: 'active'
+    });
+    setEditingUser(null);
+    setShowEditUser(false);
+  };
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -323,7 +388,12 @@ const Settings = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
+                          <button 
+                            onClick={() => handleEditWarehouse(warehouse)}
+                            className="text-blue-600 hover:text-blue-900 mr-3"
+                          >
+                            Edit
+                          </button>
                           <button className="text-red-600 hover:text-red-900">Delete</button>
                         </td>
                       </tr>
@@ -376,7 +446,12 @@ const Settings = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
+                          <button 
+                            onClick={() => handleEditUser(user)}
+                            className="text-blue-600 hover:text-blue-900 mr-3"
+                          >
+                            Edit
+                          </button>
                           <button className="text-red-600 hover:text-red-900">Deactivate</button>
                         </td>
                       </tr>
@@ -508,6 +583,209 @@ const Settings = () => {
         </div>
       )}
 
+      {/* Edit Warehouse Modal */}
+      {showEditWarehouse && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">Edit Warehouse</h3>
+                <button
+                  onClick={() => {
+                    setShowEditWarehouse(false);
+                    setEditingWarehouse(null);
+                    setNewWarehouse({
+                      id: '',
+                      name: '',
+                      location: '',
+                      status: 'active'
+                    });
+                  }}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse ID</label>
+                <input
+                  type="text"
+                  value={newWarehouse.id}
+                  disabled
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 bg-gray-100 text-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse Name *</label>
+                <input
+                  type="text"
+                  value={newWarehouse.name}
+                  onChange={(e) => setNewWarehouse({ ...newWarehouse, name: e.target.value })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter warehouse name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+                <input
+                  type="text"
+                  value={newWarehouse.location}
+                  onChange={(e) => setNewWarehouse({ ...newWarehouse, location: e.target.value })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter location"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select
+                  value={newWarehouse.status}
+                  onChange={(e) => setNewWarehouse({ ...newWarehouse, status: e.target.value as 'active' | 'inactive' })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              
+              <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    setShowEditWarehouse(false);
+                    setEditingWarehouse(null);
+                    setNewWarehouse({
+                      id: '',
+                      name: '',
+                      location: '',
+                      status: 'active'
+                    });
+                  }}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUpdateWarehouse}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center space-x-2"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>Update Warehouse</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {showEditUser && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">Edit User</h3>
+                <button
+                  onClick={() => {
+                    setShowEditUser(false);
+                    setEditingUser(null);
+                    setNewUser({
+                      name: '',
+                      role: '',
+                      email: '',
+                      status: 'active'
+                    });
+                  }}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <input
+                  type="text"
+                  value={newUser.name}
+                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter full name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Role *</label>
+                <select
+                  value={newUser.role}
+                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Role</option>
+                  <option value="Production Manager">Production Manager</option>
+                  <option value="R&D Specialist">R&D Specialist</option>
+                  <option value="Warehouse Supervisor">Warehouse Supervisor</option>
+                  <option value="Quality Control">Quality Control</option>
+                  <option value="Operations Manager">Operations Manager</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                <input
+                  type="email"
+                  value={newUser.email}
+                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter email address"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select
+                  value={newUser.status}
+                  onChange={(e) => setNewUser({ ...newUser, status: e.target.value as 'active' | 'inactive' })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              
+              <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    setShowEditUser(false);
+                    setEditingUser(null);
+                    setNewUser({
+                      name: '',
+                      role: '',
+                      email: '',
+                      status: 'active'
+                    });
+                  }}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUpdateUser}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center space-x-2"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>Update User</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Add User Modal */}
       {showAddUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
