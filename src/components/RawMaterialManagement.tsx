@@ -59,7 +59,7 @@ const MaterialForm = memo(function MaterialForm({
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-gray-900">
-              {editingMaterial ? "Edit Material" : "Add New Material"}
+              {editingMaterial ? "แก้ไขวัตถุดิบ" : "เพิ่มวัตถุดิบใหม่"}
             </h3>
             <button
               type="button"
@@ -75,7 +75,7 @@ const MaterialForm = memo(function MaterialForm({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Material Name
+                วัตถุดิบ
               </label>
               <input
                 type="text"
@@ -84,12 +84,12 @@ const MaterialForm = memo(function MaterialForm({
                   setNewMaterial((prev) => ({ ...prev, name: e.target.value }))
                 }
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter material name"
+                placeholder="กรอกชื่อวัตถุดิบ"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category
+                หมวดหมู่
               </label>
               <input
                 type="text"
@@ -101,7 +101,7 @@ const MaterialForm = memo(function MaterialForm({
                   }))
                 }
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter category"
+                placeholder="กรอกหมวดหมู่"
               />
             </div>
           </div>
@@ -109,7 +109,7 @@ const MaterialForm = memo(function MaterialForm({
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Unit
+                หน่วย
               </label>
               <select
                 value={newMaterial.unit ?? "kg"}
@@ -122,12 +122,12 @@ const MaterialForm = memo(function MaterialForm({
                 <option value="g">g</option>
                 <option value="l">l</option>
                 <option value="ml">ml</option>
-                <option value="pieces">pieces</option>
+                <option value="pieces">ชิ้น</option>
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cost per Unit
+                ราคาต่อหน่วย
               </label>
               <input
                 type="number"
@@ -145,7 +145,7 @@ const MaterialForm = memo(function MaterialForm({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Warehouse
+                คลังสินค้า
               </label>
               <select
                 value={newMaterial.warehouse ?? "WH-A"}
@@ -157,9 +157,9 @@ const MaterialForm = memo(function MaterialForm({
                 }
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="WH-A">WH-A - Main Warehouse</option>
-                <option value="WH-B">WH-B - Cold Storage</option>
-                <option value="WH-C">WH-C - Dry Storage</option>
+                <option value="WH-A">WH-A - คลังหลัก</option>
+                <option value="WH-B">WH-B - คลังเย็น</option>
+                <option value="WH-C">WH-C - คลังแห้ง</option>
               </select>
             </div>
           </div>
@@ -167,7 +167,7 @@ const MaterialForm = memo(function MaterialForm({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Current Stock
+                สต็อกปัจจุบัน{" "}
               </label>
               <input
                 type="number"
@@ -184,7 +184,7 @@ const MaterialForm = memo(function MaterialForm({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Minimum Stock
+                สต็อกขั้นต่ำ
               </label>
               <input
                 type="number"
@@ -204,7 +204,7 @@ const MaterialForm = memo(function MaterialForm({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Expected Yield %
+                อัตราผลผลิตที่คาดหวัง (%)
               </label>
               <input
                 type="number"
@@ -224,7 +224,7 @@ const MaterialForm = memo(function MaterialForm({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Expected Loss %
+                อัตราการสูญเสียที่คาดหวัง (%)
               </label>
               <input
                 type="number"
@@ -250,7 +250,7 @@ const MaterialForm = memo(function MaterialForm({
               onClick={handleClose}
               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
             >
-              Cancel
+              ยกเลิก
             </button>
             <button
               type="button"
@@ -260,7 +260,9 @@ const MaterialForm = memo(function MaterialForm({
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center space-x-2"
             >
               <Save className="w-4 h-4" />
-              <span>{editingMaterial ? "Update" : "Add"} Material</span>
+              <span>
+                {editingMaterial ? "แก้ไขวัตถุดิบ" : "เพิ่มวัตถุดิบใหม่"}
+              </span>
             </button>
           </div>
         </div>
@@ -301,7 +303,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-gray-900">
-              Create Material Request
+              สร้างคำขอเบิกวัตถุดิบ
             </h3>
             <button
               type="button"
@@ -317,7 +319,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Production Order
+                ใบสั่งผลิต
               </label>
               <input
                 type="text"
@@ -335,7 +337,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Warehouse
+                คลังสินค้า
               </label>
               <select
                 value={newRequest.warehouse ?? "WH-A"}
@@ -347,15 +349,16 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
                 }
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="WH-A">WH-A - Main Warehouse</option>
-                <option value="WH-B">WH-B - Cold Storage</option>
+                <option value="WH-A">WH-A - คลังหลัก</option>
+                <option value="WH-B">WH-B - คลังเย็น</option>
+                <option value="WH-C">WH-C - คลังแห้ง</option>
               </select>
             </div>
           </div>
 
           <div>
             <h4 className="text-sm font-medium text-gray-900 mb-3">
-              Add Material
+              เพิ่มวัตถุดิบ
             </h4>
             <div className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
               <div className="flex-1">
@@ -363,7 +366,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
                   value={newRequestItem.material ?? ""}
                   onChange={(e) => {
                     const material = materials.find(
-                      (m) => m.name === e.target.value
+                      (m) => m.name === e.target.value,
                     );
                     setNewRequestItem((prev) => ({
                       ...prev,
@@ -374,7 +377,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
                   }}
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Select Material</option>
+                  <option value="">เลือกวัตถุดิบ</option>
                   {materials.map((m) => (
                     <option key={m.id} value={m.name}>
                       {m.name}
@@ -385,7 +388,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
               <div className="w-32">
                 <input
                   type="number"
-                  placeholder="Quantity"
+                  placeholder="จำนวน"
                   value={
                     Number.isFinite(newRequestItem.requested as number)
                       ? (newRequestItem.requested as number)
@@ -401,7 +404,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
                 />
               </div>
               <div className="text-sm text-gray-600">
-                Available: {newRequestItem.available ?? 0}{" "}
+                คงเหลือ: {newRequestItem.available ?? 0}{" "}
                 {newRequestItem.unit ?? "kg"}
               </div>
               <button
@@ -417,7 +420,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
           {!!(newRequest.items && newRequest.items.length) && (
             <div>
               <h4 className="text-sm font-medium text-gray-900 mb-3">
-                Requested Materials
+                รายการวัตถุดิบที่ร้องขอ
               </h4>
               <div className="space-y-2">
                 {newRequest.items!.map((item, index) => (
@@ -427,7 +430,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
                   >
                     <span className="font-medium">{item.material}</span>
                     <div className="text-sm text-gray-600">
-                      Requested: {item.requested} {item.unit ?? ""} | Available:{" "}
+                      ขอเบิก: {item.requested} {item.unit ?? ""} | คงเหลือ:{" "}
                       {item.available} {item.unit ?? ""}
                     </div>
                     <button
@@ -456,14 +459,14 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
               onClick={() => setShowMaterialRequest(false)}
               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
             >
-              Cancel
+              ยกเลิก
             </button>
             <button
               type="button"
               onClick={handleCreateRequest}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
-              Create Request
+              สร้างคำขอ
             </button>
           </div>
         </div>
@@ -476,90 +479,121 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
  *  Parent: RawMaterialManagement
  *  ------------------------------ */
 const RawMaterialManagement = () => {
+  /* ================================
+   NOTE: Default State ภาษาไทย
+================================ */
+
   const [activeTab, setActiveTab] = useState<"materials" | "requests">(
-    "materials"
+    "materials",
   );
+
   const [showMaterialRequest, setShowMaterialRequest] = useState(false);
   const [showAddMaterial, setShowAddMaterial] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState<Material | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  /* ================================
+   NOTE: Mock วัตถุดิบภาษาไทย
+================================ */
+
   const [materials, setMaterials] = useLocalStorage<Material[]>("materials", [
     {
       id: "RM001",
-      name: "Flour Type 1",
-      category: "Baking",
-      unit: "kg",
+      name: "แป้งสาลี เบอร์ 1",
+      category: "วัตถุดิบเบเกอรี่",
+      unit: "กก.",
       costPerUnit: 2.5,
       currentStock: 120,
       minimumStock: 200,
-      warehouse: "WH-A",
+      warehouse: "คลังหลัก",
       status: "low",
       yieldPercentage: 95.0,
       lossPercentage: 5.0,
     },
     {
       id: "RM002",
-      name: "Fresh Salmon",
-      category: "Seafood",
-      unit: "kg",
-      costPerUnit: 25.0,
+      name: "ปลาแซลมอนสด",
+      category: "อาหารทะเล",
+      unit: "กก.",
+      costPerUnit: 25,
       currentStock: 45,
       minimumStock: 50,
-      warehouse: "WH-B",
+      warehouse: "คลังแช่เย็น",
       status: "critical",
-      yieldPercentage: 75.0,
-      lossPercentage: 25.0,
+      yieldPercentage: 75,
+      lossPercentage: 25,
     },
     {
       id: "RM003",
-      name: "Sugar",
-      category: "Baking",
-      unit: "kg",
+      name: "น้ำตาลทราย",
+      category: "วัตถุดิบเบเกอรี่",
+      unit: "กก.",
       costPerUnit: 1.8,
       currentStock: 380,
       minimumStock: 100,
-      warehouse: "WH-A",
+      warehouse: "คลังหลัก",
       status: "good",
-      yieldPercentage: 98.0,
-      lossPercentage: 2.0,
+      yieldPercentage: 98,
+      lossPercentage: 2,
     },
   ]);
+
+  /* ================================
+   NOTE: Mock ใบเบิกวัตถุดิบ
+================================ */
 
   const [materialRequests, setMaterialRequests] = useLocalStorage<
     MaterialRequest[]
   >("materialRequests", [
     {
       id: "MR001",
-      productionOrder: "PO-001",
-      requestedBy: "John Smith",
+      productionOrder: "ใบสั่งผลิต PO-001",
+      requestedBy: "สมชาย ใจดี",
       status: "pending",
-      warehouse: "WH-A",
+      warehouse: "คลังหลัก",
       items: [
-        { material: "Flour Type 1", requested: 50, available: 120 },
-        { material: "Sugar", requested: 20, available: 380 },
+        {
+          material: "แป้งสาลี เบอร์ 1",
+          requested: 50,
+          available: 120,
+          unit: "กก.",
+        },
+        {
+          material: "น้ำตาลทราย",
+          requested: 20,
+          available: 380,
+          unit: "กก.",
+        },
       ],
-      createdAt: "2025-01-01T10:30:00Z",
+      createdAt: new Date().toISOString(),
     },
   ]);
+
+  /* ================================
+   NOTE: ฟอร์มเพิ่มวัตถุดิบ
+================================ */
 
   const [newMaterial, setNewMaterial] = useState<Partial<Material>>({
     name: "",
     category: "",
-    unit: "kg",
+    unit: "กก.",
     costPerUnit: 0,
     currentStock: 0,
     minimumStock: 0,
-    warehouse: "WH-A",
+    warehouse: "คลังหลัก",
     status: "good",
-    yieldPercentage: 95.0,
-    lossPercentage: 5.0,
+    yieldPercentage: 95,
+    lossPercentage: 5,
   });
+
+  /* ================================
+   NOTE: ฟอร์มใบเบิก
+================================ */
 
   const [newRequest, setNewRequest] = useState<Partial<MaterialRequest>>({
     productionOrder: "",
-    requestedBy: "Current User",
-    warehouse: "WH-A",
+    requestedBy: "ผู้ใช้งานปัจจุบัน",
+    warehouse: "คลังหลัก",
     items: [],
   });
 
@@ -569,23 +603,35 @@ const RawMaterialManagement = () => {
     material: "",
     requested: 0,
     available: 0,
-    unit: "kg",
+    unit: "กก.",
   });
+
+  /* ================================
+   NOTE: Filter Search
+================================ */
 
   const filteredMaterials = materials.filter(
     (m) =>
       m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.category.toLowerCase().includes(searchTerm.toLowerCase())
+      m.category.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  /* ================================
+   NOTE: สถานะสต็อก
+================================ */
 
   const getStatusFromStock = (
     current: number,
-    minimum: number
+    minimum: number,
   ): Material["status"] => {
     if (current <= minimum * 0.5) return "critical";
     if (current <= minimum) return "low";
     return "good";
   };
+
+  /* ================================
+   NOTE: เพิ่มวัตถุดิบ
+================================ */
 
   const handleAddMaterial = () => {
     if (!newMaterial.name || !newMaterial.category) return;
@@ -594,35 +640,29 @@ const RawMaterialManagement = () => {
       id: generateId("RM"),
       name: newMaterial.name!,
       category: newMaterial.category!,
-      unit: newMaterial.unit ?? "kg",
+      unit: newMaterial.unit ?? "กก.",
       costPerUnit: newMaterial.costPerUnit ?? 0,
       currentStock: newMaterial.currentStock ?? 0,
       minimumStock: newMaterial.minimumStock ?? 0,
-      warehouse: newMaterial.warehouse ?? "WH-A",
+      warehouse: newMaterial.warehouse ?? "คลังหลัก",
       status: getStatusFromStock(
         newMaterial.currentStock ?? 0,
-        newMaterial.minimumStock ?? 0
+        newMaterial.minimumStock ?? 0,
       ),
-      // คงค่าเสริมถ้ามีใน type ของคุณ
-      yieldPercentage: newMaterial.yieldPercentage ?? 95.0,
-      lossPercentage: newMaterial.lossPercentage ?? 5.0,
+      yieldPercentage: newMaterial.yieldPercentage ?? 95,
+      lossPercentage: newMaterial.lossPercentage ?? 5,
     };
 
     setMaterials((prev) => [...prev, material]);
-    setNewMaterial({
-      name: "",
-      category: "",
-      unit: "kg",
-      costPerUnit: 0,
-      currentStock: 0,
-      minimumStock: 0,
-      warehouse: "WH-A",
-      status: "good",
-      yieldPercentage: 95.0,
-      lossPercentage: 5.0,
-    });
+
+    alert("เพิ่มวัตถุดิบเรียบร้อย");
+
     setShowAddMaterial(false);
   };
+
+  /* ================================
+   NOTE: แก้ไขวัตถุดิบ
+================================ */
 
   const handleEditMaterial = (material: Material) => {
     setEditingMaterial(material);
@@ -630,50 +670,40 @@ const RawMaterialManagement = () => {
     setShowAddMaterial(true);
   };
 
-  const handleUpdateMaterial = () => {
-    if (!editingMaterial || !newMaterial.name || !newMaterial.category) return;
+  /* ================================
+   NOTE: อัปเดตวัตถุดิบ
+================================ */
 
-    const updatedMaterial: Material = {
+  const handleUpdateMaterial = () => {
+    if (!editingMaterial) return;
+
+    const updatedMaterial = {
       ...editingMaterial,
-      name: newMaterial.name!,
-      category: newMaterial.category!,
-      unit: newMaterial.unit ?? "kg",
-      costPerUnit: newMaterial.costPerUnit ?? 0,
-      currentStock: newMaterial.currentStock ?? 0,
-      minimumStock: newMaterial.minimumStock ?? 0,
-      warehouse: newMaterial.warehouse ?? "WH-A",
-      status: getStatusFromStock(
-        newMaterial.currentStock ?? 0,
-        newMaterial.minimumStock ?? 0
-      ),
-      yieldPercentage: newMaterial.yieldPercentage ?? 95.0,
-      lossPercentage: newMaterial.lossPercentage ?? 5.0,
+      ...newMaterial,
     };
 
     setMaterials((prev) =>
-      prev.map((m) => (m.id === editingMaterial.id ? updatedMaterial : m))
+      prev.map((m) => (m.id === editingMaterial.id ? updatedMaterial : m)),
     );
-    setEditingMaterial(null);
-    setNewMaterial({
-      name: "",
-      category: "",
-      unit: "kg",
-      costPerUnit: 0,
-      currentStock: 0,
-      minimumStock: 0,
-      warehouse: "WH-A",
-      status: "good",
-      yieldPercentage: 95.0,
-      lossPercentage: 5.0,
-    });
+
+    alert("แก้ไขวัตถุดิบเรียบร้อย");
+
     setShowAddMaterial(false);
   };
 
+  /* ================================
+   NOTE: ลบวัตถุดิบ
+================================ */
+
   const handleDeleteMaterial = (id: string) => {
-    if (confirm("Are you sure you want to delete this material?")) {
+    if (confirm("ต้องการลบวัตถุดิบรายการนี้ใช่หรือไม่?")) {
       setMaterials((prev) => prev.filter((m) => m.id !== id));
     }
   };
+
+  /* ================================
+   NOTE: เพิ่มรายการใบเบิก
+================================ */
 
   const handleAddRequestItem = () => {
     if (
@@ -681,16 +711,17 @@ const RawMaterialManagement = () => {
       !newRequestItem.requested ||
       newRequestItem.requested <= 0
     ) {
-      alert("Please select a material and enter a valid quantity.");
+      alert("กรุณาเลือกวัตถุดิบและระบุจำนวนให้ถูกต้อง");
       return;
     }
 
     const material = materials.find((m) => m.name === newRequestItem.material);
+
     const item: MaterialRequestItem = {
       material: newRequestItem.material!,
       requested: newRequestItem.requested!,
       available: material?.currentStock ?? 0,
-      unit: material?.unit ?? "kg",
+      unit: material?.unit ?? "กก.",
     };
 
     setNewRequest((prev) => ({
@@ -698,51 +729,50 @@ const RawMaterialManagement = () => {
       items: [...(prev.items ?? []), item],
     }));
 
-    setNewRequestItem({
-      material: "",
-      requested: 0,
-      available: 0,
-      unit: "kg",
-    });
-
-    alert("Material added to request!");
+    alert("เพิ่มรายการใบเบิกเรียบร้อย");
   };
+
+  /* ================================
+   NOTE: สร้างใบเบิก
+================================ */
 
   const handleCreateRequest = () => {
     const request: MaterialRequest = {
       id: generateId("MR"),
       productionOrder: newRequest.productionOrder || "",
-      requestedBy: newRequest.requestedBy || "Current User",
+      requestedBy: newRequest.requestedBy || "ผู้ใช้งาน",
       status: "pending",
-      warehouse: newRequest.warehouse || "WH-A",
+      warehouse: newRequest.warehouse || "คลังหลัก",
       items: newRequest.items || [],
       createdAt: new Date().toISOString(),
     };
 
     setMaterialRequests((prev) => [...prev, request]);
 
-    setNewRequest({
-      productionOrder: "",
-      requestedBy: "Current User",
-      warehouse: "WH-A",
-      items: [],
-    });
+    alert("สร้างใบเบิกวัตถุดิบสำเร็จ");
 
-    alert("Material request created successfully!");
     setShowMaterialRequest(false);
   };
 
+  /* ================================
+   NOTE: อัปเดตสถานะใบเบิก
+================================ */
+
   const handleUpdateRequestStatus = (
     id: string,
-    status: MaterialRequest["status"]
+    status: MaterialRequest["status"],
   ) => {
     setMaterialRequests((prev) =>
-      prev.map((req) => (req.id === id ? { ...req, status } : req))
+      prev.map((req) => (req.id === id ? { ...req, status } : req)),
     );
   };
 
+  /* ================================
+   NOTE: ลบใบเบิก
+================================ */
+
   const handleDeleteRequest = (id: string) => {
-    if (confirm("Are you sure you want to delete this request?")) {
+    if (confirm("ต้องการลบใบเบิกรายการนี้ใช่หรือไม่?")) {
       setMaterialRequests((prev) => prev.filter((req) => req.id !== id));
     }
   };
@@ -750,16 +780,14 @@ const RawMaterialManagement = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">
-          Raw Material Management
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900">จัดการวัตถุดิบ</h2>
         <button
           type="button"
           onClick={() => setShowMaterialRequest(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2"
         >
           <Plus className="w-5 h-5" />
-          <span>Create Material Request</span>
+          <span>สร้างคำขอวัตถุดิบ</span>{" "}
         </button>
       </div>
 
@@ -767,8 +795,8 @@ const RawMaterialManagement = () => {
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
           {[
-            { id: "materials", name: "Materials Master", icon: Package },
-            { id: "requests", name: "Material Requests", icon: WarehouseIcon },
+            { id: "materials", name: "ข้อมูลวัตถุดิบ", icon: Package },
+            { id: "requests", name: "คำขอเบิกวัตถุดิบ", icon: WarehouseIcon },
           ].map((tab) => {
             const Icon = tab.icon;
             return (
@@ -795,14 +823,14 @@ const RawMaterialManagement = () => {
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-gray-900">
-                Raw Materials
+                รายการวัตถุดิบ
               </h3>
               <div className="flex items-center space-x-4">
                 <div className="relative">
                   <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder="Search materials..."
+                    placeholder="ค้นหาวัตถุดิบ..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -814,7 +842,7 @@ const RawMaterialManagement = () => {
                   className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center space-x-2"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add Material</span>
+                  <span>เพิ่มวัตถุดิบ</span>
                 </button>
               </div>
             </div>
@@ -824,29 +852,29 @@ const RawMaterialManagement = () => {
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Material
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    วัตถุดิบ
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Category
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    หมวดหมู่
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Cost/Unit
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    ราคาต่อหน่วย
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Current Stock
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    สต๊อกปัจจุบัน
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Min Stock
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    สต๊อกขั้นต่ำ
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Warehouse
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    คลังสินค้า
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    สถานะ
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    การจัดการ
                   </th>
                 </tr>
               </thead>
@@ -884,18 +912,18 @@ const RawMaterialManagement = () => {
                           material.status === "critical"
                             ? "bg-red-100 text-red-800"
                             : material.status === "low"
-                            ? "bg-orange-100 text-orange-800"
-                            : "bg-green-100 text-green-800"
+                              ? "bg-orange-100 text-orange-800"
+                              : "bg-green-100 text-green-800"
                         }`}
                       >
                         {material.status === "critical" && (
                           <AlertTriangle className="w-3 h-3 mr-1" />
                         )}
                         {material.status === "critical"
-                          ? "Critical"
+                          ? "วิกฤต"
                           : material.status === "low"
-                          ? "Low Stock"
-                          : "Good"}
+                            ? "สต๊อกต่ำ"
+                            : "ปกติ"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -928,7 +956,7 @@ const RawMaterialManagement = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="p-6 border-b border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900">
-              Material Requests
+              รายการคำขอเบิกวัตถุดิบ
             </h3>
           </div>
 
@@ -945,24 +973,20 @@ const RawMaterialManagement = () => {
                         {request.id}
                       </h4>
                       <p className="text-sm text-gray-600">
-                        Production Order: {request.productionOrder} | Requested
-                        by: {request.requestedBy}
+                        ใบสั่งผลิต: {request.productionOrder} | ผู้ขอเบิก: by:{" "}
+                        {request.requestedBy}
                       </p>
                     </div>
-                    <span
-                      className={`px-3 py-1 text-sm rounded-full ${
-                        request.status === "pending"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : request.status === "approved"
-                          ? "bg-blue-100 text-blue-800"
+                    <span className={`px-3 py-1 text-sm rounded-full`}>
+                      {request.status === "pending"
+                        ? "รอดำเนินการ"
+                        : request.status === "approved"
+                          ? "อนุมัติแล้ว"
                           : request.status === "completed"
-                          ? "bg-green-100 text-green-800"
-                          : request.status === "cancelled"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {request.status}
+                            ? "เสร็จสิ้น"
+                            : request.status === "cancelled"
+                              ? "ยกเลิก"
+                              : request.status}
                     </span>
                   </div>
 
@@ -974,8 +998,8 @@ const RawMaterialManagement = () => {
                       >
                         <span className="font-medium">{item.material}</span>
                         <div className="text-sm text-gray-600">
-                          Requested: {item.requested} {item.unit ?? ""} |
-                          Available: {item.available} {item.unit ?? ""}
+                          ขอเบิก: {item.requested} {item.unit ?? ""} | คงเหลือ:{" "}
+                          {item.available} {item.unit ?? ""}
                         </div>
                       </div>
                     ))}
@@ -991,7 +1015,7 @@ const RawMaterialManagement = () => {
                           }
                           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
                         >
-                          Approve Request
+                          อนุมัติคำขอ
                         </button>
                         <button
                           type="button"
@@ -1000,7 +1024,7 @@ const RawMaterialManagement = () => {
                           }
                           className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
                         >
-                          Cancel Request
+                          ยกเลิกคำขอ
                         </button>
                       </>
                     )}
@@ -1012,7 +1036,7 @@ const RawMaterialManagement = () => {
                         }
                         className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
                       >
-                        Mark Complete
+                        ทำรายการเสร็จสิ้น
                       </button>
                     )}
                     <button
@@ -1020,14 +1044,14 @@ const RawMaterialManagement = () => {
                       onClick={() => window.print()}
                       className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
                     >
-                      Print Slip
+                      พิมพ์ใบเบิก
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeleteRequest(request.id)}
                       className="text-red-600 hover:text-red-800"
                     >
-                      Delete
+                      ลบรายการ
                     </button>
                   </div>
                 </div>

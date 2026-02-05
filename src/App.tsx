@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import Dashboard from './components/Dashboard';
-import RawMaterialManagement from './components/RawMaterialManagement';
-import ProductionOrders from './components/ProductionOrders';
-import Planning from './components/Planning';
-import RnD from './components/RnD';
-import Reports from './components/Reports';
-import Settings from './components/Settings';
-import Sidebar from './components/Sidebar';
+import React, { useState } from "react";
+import Dashboard from "./components/Dashboard";
+import RawMaterialManagement from "./components/RawMaterialManagement";
+import ProductionOrders from "./components/ProductionOrders";
+import Planning from "./components/Planning";
+import RnD from "./components/RnD";
+import Reports from "./components/Reports";
+import Settings from "./components/Settings";
+import Sidebar from "./components/Sidebar";
 
 function App() {
-  const [activeModule, setActiveModule] = useState('dashboard');
+  const [activeModule, setActiveModule] = useState("dashboard");
 
   const renderActiveModule = () => {
     switch (activeModule) {
-      case 'dashboard':
+      case "dashboard":
         return <Dashboard />;
-      case 'raw-materials':
+      case "raw-materials":
         return <RawMaterialManagement />;
-      case 'production-orders':
+      case "production-orders":
         return <ProductionOrders />;
-      case 'planning':
+      case "planning":
         return <Planning />;
-      case 'rnd':
+      case "rnd":
         return <RnD />;
-      case 'reports':
+      case "reports":
         return <Reports />;
-      case 'settings':
+      case "settings":
         return <Settings />;
       default:
         return <Dashboard />;
@@ -41,7 +41,7 @@ function App() {
             <h1 className="text-2xl font-bold text-gray-900">BOM Fresh</h1>
             <div className="flex items-center space-x-4">
               <div className="text-sm text-gray-600">
-                Welcome, Production Manager
+                ยินดีต้อนรับ, Production Manager
               </div>
               <div className="w-8 h-8 bg-[#8F262B] rounded-full flex items-center justify-center text-white text-sm font-medium">
                 PM
@@ -49,9 +49,7 @@ function App() {
             </div>
           </div>
         </header>
-        <main className="flex-1 p-6">
-          {renderActiveModule()}
-        </main>
+        <main className="flex-1 p-6">{renderActiveModule()}</main>
       </div>
     </div>
   );
