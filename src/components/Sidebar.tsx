@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule }) => {
           <div className="w-8 h-8 bg-[#8F262B] rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">BM</span>
           </div>
-          <span className="font-bold text-gray-900">BOM Fresh</span>
+          <span className="font-bold text-gray-900">BTS DEMO</span>
         </div>
       </div>
 
