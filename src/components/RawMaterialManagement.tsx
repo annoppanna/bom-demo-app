@@ -43,9 +43,9 @@ const MaterialForm = memo(function MaterialForm({
       name: "",
       category: "",
       unit: "kg",
-      costPerUnit: 0,
-      currentStock: 0,
-      minimumStock: 0,
+      costPerUnit: undefined,
+      currentStock: undefined,
+      minimumStock: undefined,
       warehouse: "WH-A",
       status: "good",
       yieldPercentage: 95.0,
@@ -107,7 +107,7 @@ const MaterialForm = memo(function MaterialForm({
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 หน่วย
               </label>
@@ -117,6 +117,7 @@ const MaterialForm = memo(function MaterialForm({
                   setNewMaterial((prev) => ({ ...prev, unit: e.target.value }))
                 }
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled
               >
                 <option value="kg">kg</option>
                 <option value="g">g</option>
@@ -124,6 +125,24 @@ const MaterialForm = memo(function MaterialForm({
                 <option value="ml">ml</option>
                 <option value="pieces">ชิ้น</option>
               </select>
+            </div> */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                หน่วย
+              </label>
+              <input
+                type="text"
+                value={"kg"}
+                // onChange={(e) =>
+                //   setNewMaterial((prev) => ({
+                //     ...prev,
+                //     category: e.target.value,
+                //   }))
+                // }
+                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -131,8 +150,8 @@ const MaterialForm = memo(function MaterialForm({
               </label>
               <input
                 type="number"
-                step="0.01"
-                value={newMaterial.costPerUnit ?? 0}
+                // step="0.01"
+                value={newMaterial.costPerUnit ?? undefined}
                 onChange={(e) =>
                   setNewMaterial((prev) => ({
                     ...prev,
@@ -171,7 +190,7 @@ const MaterialForm = memo(function MaterialForm({
               </label>
               <input
                 type="number"
-                value={newMaterial.currentStock ?? 0}
+                value={newMaterial.currentStock ?? undefined}
                 onChange={(e) =>
                   setNewMaterial((prev) => ({
                     ...prev,
@@ -188,7 +207,7 @@ const MaterialForm = memo(function MaterialForm({
               </label>
               <input
                 type="number"
-                value={newMaterial.minimumStock ?? 0}
+                value={newMaterial.minimumStock ?? undefined}
                 onChange={(e) =>
                   setNewMaterial((prev) => ({
                     ...prev,
@@ -297,6 +316,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
   handleCreateRequest,
   setShowMaterialRequest,
 }: MaterialRequestFormProps) {
+  console.log({ newRequestItem });
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
@@ -389,11 +409,7 @@ const MaterialRequestForm = memo(function MaterialRequestForm({
                 <input
                   type="number"
                   placeholder="จำนวน"
-                  value={
-                    Number.isFinite(newRequestItem.requested as number)
-                      ? (newRequestItem.requested as number)
-                      : ""
-                  }
+                  value={newRequestItem.requested || undefined}
                   onChange={(e) =>
                     setNewRequestItem((prev) => ({
                       ...prev,
@@ -577,9 +593,9 @@ const RawMaterialManagement = () => {
     name: "",
     category: "",
     unit: "กก.",
-    costPerUnit: 0,
-    currentStock: 0,
-    minimumStock: 0,
+    costPerUnit: undefined,
+    currentStock: undefined,
+    minimumStock: undefined,
     warehouse: "คลังหลัก",
     status: "good",
     yieldPercentage: 95,
@@ -641,9 +657,9 @@ const RawMaterialManagement = () => {
       name: newMaterial.name!,
       category: newMaterial.category!,
       unit: newMaterial.unit ?? "กก.",
-      costPerUnit: newMaterial.costPerUnit ?? 0,
-      currentStock: newMaterial.currentStock ?? 0,
-      minimumStock: newMaterial.minimumStock ?? 0,
+      costPerUnit: newMaterial.costPerUnit ?? undefined,
+      currentStock: newMaterial.currentStock ?? undefined,
+      minimumStock: newMaterial.minimumStock ?? undefined,
       warehouse: newMaterial.warehouse ?? "คลังหลัก",
       status: getStatusFromStock(
         newMaterial.currentStock ?? 0,

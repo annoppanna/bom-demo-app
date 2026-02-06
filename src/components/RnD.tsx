@@ -136,7 +136,7 @@ const RnD = () => {
     name: "",
     productType: "ผลิตเพื่อขาย",
     grossProfit: 35,
-    processCost: 0,
+    processCost: undefined,
     ingredients: [],
   });
 
@@ -146,9 +146,9 @@ const RnD = () => {
 
   const [newIngredient, setNewIngredient] = useState<Partial<Ingredient>>({
     name: "",
-    quantity: 0,
-    unit: "กรัม",
-    cost: 0,
+    quantity: undefined,
+    unit: "กิโลกรัม",
+    cost: undefined,
     type: "หลัก",
   });
 
@@ -296,7 +296,7 @@ const RnD = () => {
     const ingredient: Ingredient = {
       name: newIngredient.name,
       quantity: newIngredient.quantity,
-      unit: newIngredient.unit || "g",
+      unit: newIngredient.unit || "กิโลกรัม",
       cost: newIngredient.cost || 0,
       type: newIngredient.type || "main",
     };
@@ -309,7 +309,7 @@ const RnD = () => {
     setNewIngredient({
       name: "",
       quantity: 0,
-      unit: "g",
+      unit: "กิโลกรัม",
       cost: 0,
       type: "main",
     });
@@ -368,321 +368,346 @@ const RnD = () => {
     }
   };
 
-  const CreateFormulaModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">
-              สร้างสูตรใหม่
-            </h3>
-            <button
-              onClick={() => setShowCreateFormula(false)}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <span className="sr-only">ปิด</span>
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+  const CreateFormulaModal = () => {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">
+                สร้างสูตรใหม่
+              </h3>
+              <button
+                onClick={() => setShowCreateFormula(false)}
+                className="text-gray-400 hover:text-gray-600"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
+                <span className="sr-only">ปิด</span>
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div className="p-6 space-y-6">
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ชื่อสูตร
+                </label>
+                <input
+                  type="text"
+                  value={newFormula.name}
+                  onChange={(e) =>
+                    setNewFormula({ ...newFormula, name: e.target.value })
+                  }
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="ระบุชื่อสูตร"
                 />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div className="p-6 space-y-6">
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                ชื่อสูตร
-              </label>
-              <input
-                type="text"
-                value={newFormula.name}
-                onChange={(e) =>
-                  setNewFormula({ ...newFormula, name: e.target.value })
-                }
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="ระบุชื่อสูตร"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                ประเภทสินค้า
-              </label>
-              <select
-                value={newFormula.productType}
-                onChange={(e) =>
-                  setNewFormula({
-                    ...newFormula,
-                    productType: e.target.value as
-                      | "Build to Sell"
-                      | "Break to Sell",
-                  })
-                }
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option>ผลิตเพื่อขาย</option>
-                <option>แยกชิ้นเพื่อขาย</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                เปอร์เซ็นต์กำไรเป้าหมาย (GP %)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={newFormula.grossProfit}
-                onChange={(e) =>
-                  setNewFormula({
-                    ...newFormula,
-                    grossProfit: parseFloat(e.target.value) || 0,
-                  })
-                }
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="35.0"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                ต้นทุนกระบวนการผลิต
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                value={newFormula.processCost}
-                onChange={(e) =>
-                  setNewFormula({
-                    ...newFormula,
-                    processCost: parseFloat(e.target.value) || 0,
-                  })
-                }
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="0.67"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                ราคาขายที่คำนวณได้
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                disabled
-                value={(() => {
-                  const materialCost = (newFormula.ingredients || []).reduce(
-                    (sum, ing) => sum + ing.cost,
-                    0,
-                  );
-                  const totalCost =
-                    materialCost + (newFormula.processCost || 0);
-                  return totalCost / (1 - (newFormula.grossProfit || 35) / 100);
-                })().toFixed(2)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 bg-gray-50"
-                placeholder="คำนวณอัตโนมัติ"
-              />
-            </div>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-medium text-gray-900 mb-4">วัตถุดิบ</h4>
-
-            <div className="space-y-3">
-              <div className="grid grid-cols-6 gap-4 p-4 border border-gray-200 rounded-lg">
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    ชื่อวัตถุดิบ
-                  </label>
-                  <input
-                    type="text"
-                    value={newIngredient.name}
-                    onChange={(e) =>
-                      setNewIngredient({
-                        ...newIngredient,
-                        name: e.target.value,
-                      })
-                    }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                    placeholder="ระบุชื่อวัตถุดิบ"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    ปริมาณ
-                  </label>
-                  <input
-                    type="number"
-                    value={newIngredient.quantity}
-                    onChange={(e) =>
-                      setNewIngredient({
-                        ...newIngredient,
-                        quantity: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    หน่วย
-                  </label>
-                  <select
-                    value={newIngredient.unit}
-                    onChange={(e) =>
-                      setNewIngredient({
-                        ...newIngredient,
-                        unit: e.target.value,
-                      })
-                    }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                  >
-                    <option>g</option>
-                    <option>kg</option>
-                    <option>ml</option>
-                    <option>l</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    ต้นทุนต่อหน่วย
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={newIngredient.cost}
-                    onChange={(e) =>
-                      setNewIngredient({
-                        ...newIngredient,
-                        cost: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    ประเภท
-                  </label>
-                  <select
-                    value={newIngredient.type}
-                    onChange={(e) =>
-                      setNewIngredient({
-                        ...newIngredient,
-                        type: e.target.value as "main" | "secondary",
-                      })
-                    }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                  >
-                    <option>วัตถุดิบหลัก</option>
-                    <option>วัตถุดิบรอง</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    ต้นทุนรวม
-                  </label>
-                  <input
-                    type="number"
-                    disabled
-                    value={(
-                      (newIngredient.quantity || 0) * (newIngredient.cost || 0)
-                    ).toFixed(2)}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-gray-50"
-                  />
-                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ประเภทสินค้า
+                </label>
+                <select
+                  value={newFormula.productType}
+                  onChange={(e) =>
+                    setNewFormula({
+                      ...newFormula,
+                      productType: e.target.value as
+                        | "Build to Sell"
+                        | "Break to Sell",
+                    })
+                  }
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option>ผลิตเพื่อขาย</option>
+                  <option>แยกชิ้นเพื่อขาย</option>
+                </select>
               </div>
             </div>
 
-            <button
-              onClick={handleAddIngredient}
-              className="mt-3 text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center"
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              เพิ่มวัตถุดิบ
-            </button>
+            <div className="grid grid-cols-3 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  เปอร์เซ็นต์กำไรเป้าหมาย (GP %)
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={newFormula.grossProfit}
+                  onChange={(e) =>
+                    setNewFormula({
+                      ...newFormula,
+                      grossProfit: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="35.0"
+                />
+              </div>
 
-            {newFormula.ingredients && newFormula.ingredients.length > 0 && (
-              <div className="mt-4">
-                <h5 className="font-medium text-gray-900 mb-2">
-                  รายการวัตถุดิบที่เพิ่มแล้ว
-                </h5>
-                <div className="space-y-2">
-                  {newFormula.ingredients.map((ingredient, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded"
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ต้นทุนกระบวนการผลิต
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={newFormula.processCost}
+                  onChange={(e) =>
+                    setNewFormula({
+                      ...newFormula,
+                      processCost: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="0.67"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ราคาขายที่คำนวณได้
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  disabled
+                  value={(() => {
+                    const materialCost = (newFormula.ingredients || []).reduce(
+                      (sum, ing) => sum + ing.cost,
+                      0,
+                    );
+                    const totalCost =
+                      materialCost + (newFormula.processCost || 0);
+                    return (
+                      totalCost / (1 - (newFormula.grossProfit || 35) / 100)
+                    );
+                  })().toFixed(2)}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 bg-gray-50"
+                  placeholder="คำนวณอัตโนมัติ"
+                />
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-medium text-gray-900 mb-4">
+                วัตถุดิบ
+              </h4>
+
+              <div className="space-y-3">
+                <div className="grid grid-cols-6 gap-4 p-4 border border-gray-200 rounded-lg">
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      ชื่อวัตถุดิบ
+                    </label>
+                    <input
+                      type="text"
+                      value={newIngredient.name}
+                      onChange={(e) =>
+                        setNewIngredient({
+                          ...newIngredient,
+                          name: e.target.value,
+                        })
+                      }
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                      placeholder="ระบุชื่อวัตถุดิบ"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      ปริมาณ
+                    </label>
+                    <input
+                      type="number"
+                      value={newIngredient.quantity}
+                      onChange={(e) =>
+                        setNewIngredient({
+                          ...newIngredient,
+                          quantity: parseFloat(e.target.value) || 0,
+                        })
+                      }
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                    />
+                  </div>
+
+                  {/* <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      หน่วย
+                    </label>
+                    <select
+                      value={newIngredient.unit}
+                      onChange={(e) =>
+                        setNewIngredient({
+                          ...newIngredient,
+                          unit: e.target.value,
+                        })
+                      }
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
                     >
-                      <span className="font-medium">{ingredient.name}</span>
-                      <span className="text-sm text-gray-600">
-                        {ingredient.quantity} {ingredient.unit} - $
-                        {ingredient.cost.toFixed(2)}
-                      </span>
-                      <button
-                        onClick={() => {
-                          const updatedIngredients =
-                            newFormula.ingredients?.filter(
-                              (_, i) => i !== index,
-                            ) || [];
-                          setNewFormula({
-                            ...newFormula,
-                            ingredients: updatedIngredients,
-                          });
-                        }}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        ลบ
-                      </button>
-                    </div>
-                  ))}
+                      <option>g</option>
+                      <option>kg</option>
+                      <option>ml</option>
+                      <option>l</option>
+                    </select>
+                  </div> */}
+
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      หน่วย
+                    </label>
+                    <input
+                      type="text"
+                      value={newIngredient.unit}
+                      onChange={(e) =>
+                        setNewIngredient({
+                          ...newIngredient,
+                          unit: e.target.value,
+                        })
+                      }
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                      disabled
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      ต้นทุนต่อหน่วย
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={newIngredient.cost}
+                      onChange={(e) =>
+                        setNewIngredient({
+                          ...newIngredient,
+                          cost: parseFloat(e.target.value) || 0,
+                        })
+                      }
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      ประเภท
+                    </label>
+                    <select
+                      value={newIngredient.type}
+                      onChange={(e) =>
+                        setNewIngredient({
+                          ...newIngredient,
+                          type: e.target.value as "main" | "secondary",
+                        })
+                      }
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                    >
+                      <option>วัตถุดิบหลัก</option>
+                      <option>วัตถุดิบรอง</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      ต้นทุนรวม
+                    </label>
+                    <input
+                      type="number"
+                      disabled
+                      value={(
+                        (newIngredient.quantity || 0) *
+                        (newIngredient.cost || 0)
+                      ).toFixed(2)}
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-gray-50"
+                    />
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
 
-          <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-            <button
-              onClick={() => setShowCreateFormula(false)}
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-            >
-              ยกเลิก
-            </button>
+              <button
+                onClick={handleAddIngredient}
+                className="mt-3 text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center"
+              >
+                <Plus className="w-4 h-4 mr-1" />
+                เพิ่มวัตถุดิบ
+              </button>
 
-            <button className="px-6 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700">
-              บันทึกเป็นแบบร่าง
-            </button>
+              {newFormula.ingredients && newFormula.ingredients.length > 0 && (
+                <div className="mt-4">
+                  <h5 className="font-medium text-gray-900 mb-2">
+                    รายการวัตถุดิบที่เพิ่มแล้ว
+                  </h5>
+                  <div className="space-y-2">
+                    {newFormula.ingredients.map((ingredient, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded"
+                      >
+                        <span className="font-medium">{ingredient.name}</span>
+                        <span className="text-sm text-gray-600">
+                          {ingredient.quantity} {ingredient.unit} - $
+                          {ingredient.cost.toFixed(2)}
+                        </span>
+                        <button
+                          onClick={() => {
+                            const updatedIngredients =
+                              newFormula.ingredients?.filter(
+                                (_, i) => i !== index,
+                              ) || [];
+                            setNewFormula({
+                              ...newFormula,
+                              ingredients: updatedIngredients,
+                            });
+                          }}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          ลบ
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
-            <button
-              onClick={
-                editingFormula ? handleUpdateFormula : handleCreateFormula
-              }
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              {editingFormula ? "อัปเดตสูตร" : "สร้างสูตร"}
-            </button>
+            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+              <button
+                onClick={() => setShowCreateFormula(false)}
+                className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              >
+                ยกเลิก
+              </button>
+
+              <button className="px-6 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700">
+                บันทึกเป็นแบบร่าง
+              </button>
+
+              <button
+                onClick={
+                  editingFormula ? handleUpdateFormula : handleCreateFormula
+                }
+                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                {editingFormula ? "อัปเดตสูตร" : "สร้างสูตร"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="space-y-6">

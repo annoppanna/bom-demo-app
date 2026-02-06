@@ -97,7 +97,7 @@ const ProductionOrders = () => {
     productName: "",
     productionType: "ผลิตเพื่อจำหน่าย",
     quantity: 0,
-    unit: "ชิ้น",
+    unit: "กิโลกรัม",
     status: "pending",
     progress: 0,
     plannedStart: "",
@@ -383,7 +383,7 @@ const ProductionOrders = () => {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 หน่วย
               </label>
@@ -400,6 +400,19 @@ const ProductionOrders = () => {
                 <option value="loaves">ก้อน</option>
                 <option value="liters">ลิตร</option>
               </select>
+            </div> */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                หน่วย
+              </label>
+
+              <input
+                type="text"
+                value={newOrder.unit}
+                className="w-full rounded-md border border-gray-300 px-3 py-2"
+                disabled
+              />
             </div>
           </div>
 
@@ -478,7 +491,7 @@ const ProductionOrders = () => {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label className="text-xs text-gray-500">หน่วย</label>
 
                 <select
@@ -494,6 +507,15 @@ const ProductionOrders = () => {
                   <option value="ml">มิลลิลิตร</option>
                   <option value="pieces">ชิ้น</option>
                 </select>
+              </div> */}
+              <div>
+                <label className="text-xs text-gray-500">หน่วย</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2 text-sm rounded-md"
+                  value={newMaterial.unit}
+                  disabled
+                />
               </div>
 
               <div className="flex items-end">

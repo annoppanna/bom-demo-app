@@ -13,7 +13,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
   const [newPlan, setNewPlan] = useState({
     product: "",
     plannedQuantity: 0,
-    unit: "pieces",
+    unit: "กิโลกรัม",
     priority: "medium",
     startTime: "08:00",
     endTime: "16:00",
@@ -23,7 +23,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
   const [newMaterial, setNewMaterial] = useState({
     name: "",
     required: 0,
-    unit: "kg",
+    unit: "กิโลกรัม",
   });
 
   const handleAddMaterial = () => {
@@ -57,7 +57,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
       <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="p-6 border-b flex justify-between items-center">
-          <h3 className="text-lg font-semibold">Create Production Plan</h3>
+          <h3 className="text-lg font-semibold">สร้างแผนการผลิต</h3>
           <button onClick={onClose}>
             <X className="w-5 h-5 text-gray-500" />
           </button>
@@ -68,7 +68,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
           {/* Basic Info */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium">Product</label>
+              <label className="text-sm font-medium">สินค้า</label>
               <input
                 className="w-full border rounded px-3 py-2 mt-1"
                 value={newPlan.product}
@@ -79,11 +79,11 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
             </div>
 
             <div>
-              <label className="text-sm font-medium">Quantity</label>
+              <label className="text-sm font-medium">จำนวน</label>
               <input
                 type="number"
                 className="w-full border rounded px-3 py-2 mt-1"
-                value={newPlan.plannedQuantity}
+                value={newPlan.plannedQuantity || undefined}
                 onChange={(e) =>
                   setNewPlan({
                     ...newPlan,
@@ -94,23 +94,20 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
             </div>
 
             <div>
-              <label className="text-sm font-medium">Unit</label>
-              <select
+              <label className="text-sm font-medium">หน่วย</label>
+              <input
+                type="text"
                 className="w-full border rounded px-3 py-2 mt-1"
                 value={newPlan.unit}
                 onChange={(e) =>
                   setNewPlan({ ...newPlan, unit: e.target.value })
                 }
-              >
-                <option>pieces</option>
-                <option>kg</option>
-                <option>loaves</option>
-                <option>liters</option>
-              </select>
+                disabled
+              />
             </div>
 
             <div>
-              <label className="text-sm font-medium">Priority</label>
+              <label className="text-sm font-medium">ลำดับความสำคัญ</label>
               <select
                 className="w-full border rounded px-3 py-2 mt-1"
                 value={newPlan.priority}
@@ -118,14 +115,14 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
                   setNewPlan({ ...newPlan, priority: e.target.value })
                 }
               >
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
+                <option value="high">สูง</option>
+                <option value="medium">ปานกลาง</option>
+                <option value="low">ต่ำ</option>
               </select>
             </div>
 
             <div>
-              <label className="text-sm font-medium">Start Time</label>
+              <label className="text-sm font-medium">เวลาเริ่มต้น</label>
               <input
                 type="time"
                 className="w-full border rounded px-3 py-2 mt-1"
@@ -137,7 +134,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
             </div>
 
             <div>
-              <label className="text-sm font-medium">End Time</label>
+              <label className="text-sm font-medium">เวลาสิ้นสุด</label>
               <input
                 type="time"
                 className="w-full border rounded px-3 py-2 mt-1"
@@ -151,11 +148,11 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
 
           {/* Materials */}
           <div>
-            <h4 className="font-semibold mb-3">Required Materials</h4>
+            <h4 className="font-semibold mb-3">วัตถุดิบที่ต้องใช้</h4>
 
             <div className="grid grid-cols-4 gap-3 border p-4 rounded">
               <input
-                placeholder="Material name"
+                placeholder="ชื่อวัตถุดิบ"
                 className="border px-3 py-2 rounded"
                 value={newMaterial.name}
                 onChange={(e) =>
@@ -165,9 +162,9 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
 
               <input
                 type="number"
-                placeholder="Required qty"
+                placeholder="จำนวนที่ต้องใช้"
                 className="border px-3 py-2 rounded"
-                value={newMaterial.required}
+                value={newMaterial.required || undefined}
                 onChange={(e) =>
                   setNewMaterial({
                     ...newMaterial,
@@ -176,7 +173,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
                 }
               />
 
-              <select
+              {/* <select
                 className="border px-3 py-2 rounded"
                 value={newMaterial.unit}
                 onChange={(e) =>
@@ -188,14 +185,24 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
                 <option>l</option>
                 <option>ml</option>
                 <option>pieces</option>
-              </select>
+              </select> */}
+
+              <input
+                type="text"
+                value={newMaterial.unit}
+                onChange={(e) =>
+                  setNewMaterial({ ...newMaterial, unit: e.target.value })
+                }
+                className="border px-3 py-2 rounded"
+                disabled
+              />
 
               <button
                 onClick={handleAddMaterial}
                 className="bg-blue-600 text-white rounded flex items-center justify-center"
               >
                 <Plus className="w-4 h-4 mr-1" />
-                Add
+                เพิ่ม
               </button>
             </div>
 
@@ -215,7 +222,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
                       onClick={() => handleRemoveMaterial(index)}
                       className="text-red-500"
                     >
-                      Remove
+                      ลบ
                     </button>
                   </div>
                 ))}
@@ -229,7 +236,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
               onClick={onClose}
               className="border px-5 py-2 rounded text-gray-700"
             >
-              Cancel
+              ยกเลิก
             </button>
 
             <button
@@ -237,7 +244,7 @@ const CreatePlanModal: React.FC<CreatePlanModalProps> = ({
               className="bg-blue-600 text-white px-5 py-2 rounded flex items-center gap-2"
             >
               <Save className="w-4 h-4" />
-              Save Plan
+              บันทึกแผน
             </button>
           </div>
         </div>
