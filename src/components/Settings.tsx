@@ -1,129 +1,170 @@
-import React, { useState } from 'react';
-import { Settings as SettingsIcon, Database, Users, Warehouse, Package, FileText, RefreshCw, Plus, X, Save } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Settings as SettingsIcon,
+  Database,
+  Users,
+  Warehouse,
+  Package,
+  FileText,
+  RefreshCw,
+  Plus,
+  X,
+  Save,
+} from "lucide-react";
 
 const Settings = () => {
-  const [activeSection, setActiveSection] = useState('master-data');
+  const [activeSection, setActiveSection] = useState("master-data");
   const [showAddWarehouse, setShowAddWarehouse] = useState(false);
   const [showAddUser, setShowAddUser] = useState(false);
   const [showEditWarehouse, setShowEditWarehouse] = useState(false);
   const [showEditUser, setShowEditUser] = useState(false);
   const [editingWarehouse, setEditingWarehouse] = useState<any>(null);
   const [editingUser, setEditingUser] = useState<any>(null);
-  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
+  const [syncStatus, setSyncStatus] = useState<
+    "idle" | "syncing" | "success" | "error"
+  >("idle");
 
   const [newWarehouse, setNewWarehouse] = useState({
-    id: '',
-    name: '',
-    location: '',
-    status: 'active' as 'active' | 'inactive'
+    id: "",
+    name: "",
+    location: "",
+    status: "active" as "active" | "inactive",
   });
 
   const [newUser, setNewUser] = useState({
-    name: '',
-    role: '',
-    email: '',
-    status: 'active' as 'active' | 'inactive'
+    name: "",
+    role: "",
+    email: "",
+    status: "active" as "active" | "inactive",
   });
 
   const sections = [
-    { id: 'master-data', name: 'Master Data', icon: Database },
-    { id: 'users', name: 'User Management', icon: Users },
-    { id: 'warehouses', name: 'Warehouses', icon: Warehouse },
-    { id: 'products', name: 'Product Master', icon: Package },
-    { id: 'integrations', name: 'Integrations', icon: FileText },
+    { id: "master-data", name: "ข้อมูลหลัก", icon: Database },
+    { id: "users", name: "จัดการผู้ใช้งาน", icon: Users },
+    { id: "warehouses", name: "คลังสินค้า", icon: Warehouse },
+    { id: "products", name: "ข้อมูลสินค้าหลัก", icon: Package },
+    { id: "integrations", name: "การเชื่อมต่อระบบ", icon: FileText },
   ];
 
   const warehouses = [
-    { id: 'WH-A', name: 'Main Warehouse', location: 'Building A', status: 'active' },
-    { id: 'WH-B', name: 'Cold Storage', location: 'Building B', status: 'active' },
-    { id: 'WH-C', name: 'Dry Storage', location: 'Building C', status: 'inactive' }
+    {
+      id: "WH-A",
+      name: "คลังสินค้าหลัก",
+      location: "อาคาร A",
+      status: "active",
+    },
+    { id: "WH-B", name: "คลังแช่เย็น", location: "อาคาร B", status: "active" },
+    {
+      id: "WH-C",
+      name: "คลังสินค้าแห้ง",
+      location: "อาคาร C",
+      status: "inactive",
+    },
   ];
 
   const users = [
-    { id: 1, name: 'John Smith', role: 'Production Manager', email: 'john@company.com', status: 'active' },
-    { id: 2, name: 'Sarah Johnson', role: 'R&D Specialist', email: 'sarah@company.com', status: 'active' },
-    { id: 3, name: 'Mike Chen', role: 'Warehouse Supervisor', email: 'mike@company.com', status: 'active' }
+    {
+      id: 1,
+      name: "John Smith",
+      role: "ผู้จัดการฝ่ายผลิต",
+      email: "john@company.com",
+      status: "active",
+    },
+    {
+      id: 2,
+      name: "Sarah Johnson",
+      role: "ผู้เชี่ยวชาญฝ่ายวิจัยและพัฒนา",
+      email: "sarah@company.com",
+      status: "active",
+    },
+    {
+      id: 3,
+      name: "Mike Chen",
+      role: "หัวหน้าคลังสินค้า",
+      email: "mike@company.com",
+      status: "active",
+    },
   ];
 
   const integrations = [
     {
-      name: 'RMS (Inventory System)',
-      status: 'connected',
-      lastSync: '2025-01-01T10:30:00Z',
-      description: 'Sync finished goods quantity and cost'
+      name: "RMS (ระบบบริหารคลังสินค้า)",
+      status: "connected",
+      lastSync: "2025-01-01T10:30:00Z",
+      description: "ซิงค์ปริมาณและต้นทุนสินค้าสำเร็จรูป",
     },
     {
-      name: 'Sales Forecasting System',
-      status: 'disconnected',
+      name: "ระบบพยากรณ์ยอดขาย",
+      status: "disconnected",
       lastSync: null,
-      description: 'Import sales forecast for production planning'
+      description: "นำเข้าข้อมูลคาดการณ์ยอดขายเพื่อวางแผนการผลิต",
     },
     {
-      name: 'Material Master Database',
-      status: 'connected',
-      lastSync: '2025-01-01T09:15:00Z',
-      description: 'Import/export material master and costs'
-    }
+      name: "ฐานข้อมูลวัตถุดิบหลัก",
+      status: "connected",
+      lastSync: "2025-01-01T09:15:00Z",
+      description: "นำเข้า/ส่งออกข้อมูลวัตถุดิบและต้นทุน",
+    },
   ];
 
   const handleSyncMasterData = async () => {
-    setSyncStatus('syncing');
+    setSyncStatus("syncing");
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setSyncStatus('success');
-      setTimeout(() => setSyncStatus('idle'), 3000);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setSyncStatus("success");
+      setTimeout(() => setSyncStatus("idle"), 3000);
     } catch (error) {
-      setSyncStatus('error');
-      setTimeout(() => setSyncStatus('idle'), 3000);
+      setSyncStatus("error");
+      setTimeout(() => setSyncStatus("idle"), 3000);
     }
   };
 
   const handleAddWarehouse = () => {
     if (!newWarehouse.name || !newWarehouse.location) {
-      alert('Please fill in all required fields');
+      alert("Please fill in all required fields");
       return;
     }
-    
+
     const warehouseId = `WH-${String.fromCharCode(65 + warehouses.length)}`;
     const warehouse = {
       ...newWarehouse,
-      id: warehouseId
+      id: warehouseId,
     };
-    
+
     // In a real app, this would update the warehouses state
-    console.log('Adding warehouse:', warehouse);
-    alert('Warehouse added successfully!');
-    
+    console.log("Adding warehouse:", warehouse);
+    alert("Warehouse added successfully!");
+
     setNewWarehouse({
-      id: '',
-      name: '',
-      location: '',
-      status: 'active'
+      id: "",
+      name: "",
+      location: "",
+      status: "active",
     });
     setShowAddWarehouse(false);
   };
 
   const handleAddUser = () => {
     if (!newUser.name || !newUser.role || !newUser.email) {
-      alert('Please fill in all required fields');
+      alert("Please fill in all required fields");
       return;
     }
-    
+
     const user = {
       ...newUser,
-      id: users.length + 1
+      id: users.length + 1,
     };
-    
+
     // In a real app, this would update the users state
-    console.log('Adding user:', user);
-    alert('User added successfully!');
-    
+    console.log("Adding user:", user);
+    alert("User added successfully!");
+
     setNewUser({
-      name: '',
-      role: '',
-      email: '',
-      status: 'active'
+      name: "",
+      role: "",
+      email: "",
+      status: "active",
     });
     setShowAddUser(false);
   };
@@ -134,26 +175,26 @@ const Settings = () => {
       id: warehouse.id,
       name: warehouse.name,
       location: warehouse.location,
-      status: warehouse.status
+      status: warehouse.status,
     });
     setShowEditWarehouse(true);
   };
 
   const handleUpdateWarehouse = () => {
     if (!newWarehouse.name || !newWarehouse.location) {
-      alert('Please fill in all required fields');
+      alert("Please fill in all required fields");
       return;
     }
-    
+
     // In a real app, this would update the warehouses state
-    console.log('Updating warehouse:', newWarehouse);
-    alert('Warehouse updated successfully!');
-    
+    console.log("Updating warehouse:", newWarehouse);
+    alert("Warehouse updated successfully!");
+
     setNewWarehouse({
-      id: '',
-      name: '',
-      location: '',
-      status: 'active'
+      id: "",
+      name: "",
+      location: "",
+      status: "active",
     });
     setEditingWarehouse(null);
     setShowEditWarehouse(false);
@@ -165,34 +206,35 @@ const Settings = () => {
       name: user.name,
       role: user.role,
       email: user.email,
-      status: user.status
+      status: user.status,
     });
     setShowEditUser(true);
   };
 
   const handleUpdateUser = () => {
     if (!newUser.name || !newUser.role || !newUser.email) {
-      alert('Please fill in all required fields');
+      alert("Please fill in all required fields");
       return;
     }
-    
+
     // In a real app, this would update the users state
-    console.log('Updating user:', newUser);
-    alert('User updated successfully!');
-    
+    console.log("Updating user:", newUser);
+    alert("User updated successfully!");
+
     setNewUser({
-      name: '',
-      role: '',
-      email: '',
-      status: 'active'
+      name: "",
+      role: "",
+      email: "",
+      status: "active",
     });
     setEditingUser(null);
     setShowEditUser(false);
   };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Settings & Master Data</h2>
+        <h2 className="text-2xl font-bold text-gray-900">ตั้งค่า</h2>
       </div>
 
       <div className="flex space-x-6">
@@ -208,8 +250,8 @@ const Settings = () => {
                     onClick={() => setActiveSection(section.id)}
                     className={`w-full flex items-center px-3 py-2 text-left rounded-md text-sm font-medium ${
                       activeSection === section.id
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-gray-600 hover:bg-gray-100"
                     }`}
                   >
                     <Icon className="w-4 h-4 mr-3" />
@@ -223,51 +265,62 @@ const Settings = () => {
 
         {/* Content */}
         <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200">
-          {activeSection === 'master-data' && (
+          {activeSection === "master-data" && (
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Master Data Management</h3>
-              
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">
+                จัดการข้อมูลหลัก
+              </h3>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="border border-gray-200 rounded-lg p-6">
                   <div className="flex items-center space-x-3 mb-4">
                     <Package className="w-6 h-6 text-[#8F262B]" />
-                    <h4 className="text-md font-medium text-gray-900">Material Master</h4>
+                    <h4 className="text-md font-medium text-gray-900">
+                      ข้อมูลวัตถุดิบหลัก
+                    </h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Manage raw materials, costs, and specifications
+                    จัดการวัตถุดิบ ต้นทุน และรายละเอียดสเปค
                   </p>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span>Total Materials:</span>
+                      <span>จำนวนวัตถุดิบทั้งหมด:</span>
                       <span className="font-medium">156</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Last Updated:</span>
+                      <span>อัปเดตล่าสุด:</span>
                       <span className="font-medium">2025-01-01</span>
                     </div>
                   </div>
                   <button className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
-                    Manage Materials
+                    จัดการวัตถุดิบ
                   </button>
-                  <button 
+                  <button
                     onClick={handleSyncMasterData}
-                    disabled={syncStatus === 'syncing'}
+                    disabled={syncStatus === "syncing"}
                     className={`mt-2 w-full flex items-center justify-center space-x-2 py-2 px-4 rounded-md transition-colors ${
-                      syncStatus === 'syncing' 
-                        ? 'bg-gray-400 text-white cursor-not-allowed' 
-                        : syncStatus === 'success'
-                        ? 'bg-green-600 text-white'
-                        : syncStatus === 'error'
-                        ? 'bg-red-600 text-white'
-                        : 'bg-orange-600 text-white hover:bg-orange-700'
+                      syncStatus === "syncing"
+                        ? "bg-gray-400 text-white cursor-not-allowed"
+                        : syncStatus === "success"
+                          ? "bg-green-600 text-white"
+                          : syncStatus === "error"
+                            ? "bg-red-600 text-white"
+                            : "bg-orange-600 text-white hover:bg-orange-700"
                     }`}
                   >
-                    <RefreshCw className={`w-4 h-4 ${syncStatus === 'syncing' ? 'animate-spin' : ''}`} />
+                    <RefreshCw
+                      className={`w-4 h-4 ${
+                        syncStatus === "syncing" ? "animate-spin" : ""
+                      }`}
+                    />
                     <span>
-                      {syncStatus === 'syncing' ? 'Syncing...' :
-                       syncStatus === 'success' ? 'Sync Complete' :
-                       syncStatus === 'error' ? 'Sync Failed' :
-                       'Sync Master Data'}
+                      {syncStatus === "syncing"
+                        ? "กำลังซิงค์..."
+                        : syncStatus === "success"
+                          ? "ซิงค์สำเร็จ"
+                          : syncStatus === "error"
+                            ? "ซิงค์ไม่สำเร็จ"
+                            : "ซิงค์ข้อมูลหลัก"}
                     </span>
                   </button>
                 </div>
@@ -275,97 +328,115 @@ const Settings = () => {
                 <div className="border border-gray-200 rounded-lg p-6">
                   <div className="flex items-center space-x-3 mb-4">
                     <FileText className="w-6 h-6 text-[#8F262B]" />
-                    <h4 className="text-md font-medium text-gray-900">Product Master</h4>
+                    <h4 className="text-md font-medium text-gray-900">
+                      ข้อมูลสินค้าหลัก
+                    </h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Manage finished products and pricing
+                    จัดการสินค้าสำเร็จรูปและการตั้งราคา
                   </p>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span>Total Products:</span>
+                      <span>จำนวนสินค้าทั้งหมด:</span>
                       <span className="font-medium">48</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Last Updated:</span>
+                      <span>อัปเดตล่าสุด:</span>
                       <span className="font-medium">2024-12-30</span>
                     </div>
                   </div>
                   <button className="mt-4 w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">
-                    Manage Products
+                    จัดการสินค้า
                   </button>
                 </div>
 
                 <div className="border border-gray-200 rounded-lg p-6">
                   <div className="flex items-center space-x-3 mb-4">
                     <SettingsIcon className="w-6 h-6 text-[#8F262B]" />
-                    <h4 className="text-md font-medium text-gray-900">System Configuration</h4>
+                    <h4 className="text-md font-medium text-gray-900">
+                      ตั้งค่าระบบ
+                    </h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Configure system settings and preferences
+                    กำหนดค่าการทำงานของระบบและการตั้งค่าต่าง ๆ
                   </p>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span>Default Currency:</span>
+                      <span>สกุลเงินเริ่มต้น:</span>
                       <span className="font-medium">USD</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Time Zone:</span>
+                      <span>เขตเวลา:</span>
                       <span className="font-medium">UTC-5</span>
                     </div>
                   </div>
                   <button className="mt-4 w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700">
-                    Configure System
+                    ตั้งค่าระบบ
                   </button>
                 </div>
 
                 <div className="border border-gray-200 rounded-lg p-6">
                   <div className="flex items-center space-x-3 mb-4">
                     <Database className="w-6 h-6 text-[#8F262B]" />
-                    <h4 className="text-md font-medium text-gray-900">Data Import/Export</h4>
+                    <h4 className="text-md font-medium text-gray-900">
+                      นำเข้า / ส่งออกข้อมูล
+                    </h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Import and export data to external systems
+                    นำเข้าและส่งออกข้อมูลไปยังระบบภายนอก
                   </p>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span>Last Import:</span>
+                      <span>นำเข้าล่าสุด:</span>
                       <span className="font-medium">2025-01-01</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Last Export:</span>
+                      <span>ส่งออกล่าสุด:</span>
                       <span className="font-medium">2024-12-31</span>
                     </div>
                   </div>
                   <button className="mt-4 w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700">
-                    Manage Data
+                    จัดการข้อมูล
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {activeSection === 'warehouses' && (
+          {activeSection === "warehouses" && (
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">Warehouse Management</h3>
-                <button 
+                <h3 className="text-lg font-semibold text-gray-900">
+                  จัดการคลังสินค้า
+                </h3>
+                <button
                   onClick={() => setShowAddWarehouse(true)}
                   className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add Warehouse</span>
+                  <span>เพิ่มคลังสินค้า</span>
                 </button>
               </div>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        รหัส
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ชื่อคลัง
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ที่ตั้ง
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        สถานะ
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        การจัดการ
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -381,20 +452,28 @@ const Settings = () => {
                           {warehouse.location}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            warehouse.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                          }`}>
-                            {warehouse.status}
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              warehouse.status === "active"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {warehouse.status === "active"
+                              ? "ใช้งาน"
+                              : "ปิดใช้งาน"}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button 
+                          <button
                             onClick={() => handleEditWarehouse(warehouse)}
                             className="text-blue-600 hover:text-blue-900 mr-3"
                           >
-                            Edit
+                            แก้ไข
                           </button>
-                          <button className="text-red-600 hover:text-red-900">Delete</button>
+                          <button className="text-red-600 hover:text-red-900">
+                            ลบ
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -404,28 +483,40 @@ const Settings = () => {
             </div>
           )}
 
-          {activeSection === 'users' && (
+          {activeSection === "users" && (
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">User Management</h3>
-                <button 
+                <h3 className="text-lg font-semibold text-gray-900">
+                  จัดการผู้ใช้งาน
+                </h3>
+                <button
                   onClick={() => setShowAddUser(true)}
                   className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add User</span>
+                  <span>เพิ่มผู้ใช้</span>
                 </button>
               </div>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        ชื่อ
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        บทบาท
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        อีเมล
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        สถานะ
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        การจัดการ
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -442,17 +533,19 @@ const Settings = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {user.status}
+                            {user.status === "active" ? "ใช้งาน" : "ปิดใช้งาน"}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button 
+                          <button
                             onClick={() => handleEditUser(user)}
                             className="text-blue-600 hover:text-blue-900 mr-3"
                           >
-                            Edit
+                            แก้ไข
                           </button>
-                          <button className="text-red-600 hover:text-red-900">Deactivate</button>
+                          <button className="text-red-600 hover:text-red-900">
+                            ปิดการใช้งาน
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -462,36 +555,56 @@ const Settings = () => {
             </div>
           )}
 
-          {activeSection === 'integrations' && (
+          {activeSection === "integrations" && (
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">System Integrations</h3>
-              
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">
+                การเชื่อมต่อระบบ
+              </h3>
+
               <div className="space-y-4">
                 {integrations.map((integration, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-6">
+                  <div
+                    key={index}
+                    className="border border-gray-200 rounded-lg p-6"
+                  >
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h4 className="text-md font-medium text-gray-900">{integration.name}</h4>
-                        <p className="text-sm text-gray-600">{integration.description}</p>
+                        <h4 className="text-md font-medium text-gray-900">
+                          {integration.name}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {integration.description}
+                        </p>
                       </div>
                       <div className="flex items-center space-x-3">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          integration.status === 'connected' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                        }`}>
-                          {integration.status}
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            integration.status === "connected"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {integration.status === "connected"
+                            ? "เชื่อมต่อแล้ว"
+                            : "ยังไม่เชื่อมต่อ"}
                         </span>
-                        <button className={`px-4 py-2 rounded-md text-sm font-medium ${
-                          integration.status === 'connected' 
-                            ? 'bg-red-600 text-white hover:bg-red-700' 
-                            : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }`}>
-                          {integration.status === 'connected' ? 'Disconnect' : 'Connect'}
+                        <button
+                          className={`px-4 py-2 rounded-md text-sm font-medium ${
+                            integration.status === "connected"
+                              ? "bg-red-600 text-white hover:bg-red-700"
+                              : "bg-blue-600 text-white hover:bg-blue-700"
+                          }`}
+                        >
+                          {integration.status === "connected"
+                            ? "ยกเลิกการเชื่อมต่อ"
+                            : "เชื่อมต่อ"}
                         </button>
                       </div>
                     </div>
                     {integration.lastSync && (
                       <div className="text-sm text-gray-600">
-                        Last sync: {new Date(integration.lastSync).toLocaleString()}
+                        ซิงค์ล่าสุด:{" "}
+                        {new Date(integration.lastSync).toLocaleString()}
                       </div>
                     )}
                   </div>
@@ -500,12 +613,17 @@ const Settings = () => {
             </div>
           )}
 
-          {activeSection === 'products' && (
+          {activeSection === "products" && (
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Product Master Data</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">
+                ข้อมูลสินค้าหลัก
+              </h3>
               <div className="text-center py-12">
                 <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">Product master data management will be integrated with the main product catalog.</p>
+                <p className="text-gray-600">
+                  Product master data management will be integrated with the
+                  main product catalog.
+                </p>
               </div>
             </div>
           )}
@@ -518,7 +636,9 @@ const Settings = () => {
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Add New Warehouse</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Add New Warehouse
+                </h3>
                 <button
                   onClick={() => setShowAddWarehouse(false)}
                   className="text-gray-400 hover:text-gray-600"
@@ -527,42 +647,60 @@ const Settings = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Warehouse Name *
+                </label>
                 <input
                   type="text"
                   value={newWarehouse.name}
-                  onChange={(e) => setNewWarehouse({ ...newWarehouse, name: e.target.value })}
+                  onChange={(e) =>
+                    setNewWarehouse({ ...newWarehouse, name: e.target.value })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter warehouse name"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Location *
+                </label>
                 <input
                   type="text"
                   value={newWarehouse.location}
-                  onChange={(e) => setNewWarehouse({ ...newWarehouse, location: e.target.value })}
+                  onChange={(e) =>
+                    setNewWarehouse({
+                      ...newWarehouse,
+                      location: e.target.value,
+                    })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter location"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
                 <select
                   value={newWarehouse.status}
-                  onChange={(e) => setNewWarehouse({ ...newWarehouse, status: e.target.value as 'active' | 'inactive' })}
+                  onChange={(e) =>
+                    setNewWarehouse({
+                      ...newWarehouse,
+                      status: e.target.value as "active" | "inactive",
+                    })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
-              
+
               <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                 <button
                   onClick={() => setShowAddWarehouse(false)}
@@ -589,16 +727,18 @@ const Settings = () => {
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Edit Warehouse</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Edit Warehouse
+                </h3>
                 <button
                   onClick={() => {
                     setShowEditWarehouse(false);
                     setEditingWarehouse(null);
                     setNewWarehouse({
-                      id: '',
-                      name: '',
-                      location: '',
-                      status: 'active'
+                      id: "",
+                      name: "",
+                      location: "",
+                      status: "active",
                     });
                   }}
                   className="text-gray-400 hover:text-gray-600"
@@ -607,10 +747,12 @@ const Settings = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse ID</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Warehouse ID
+                </label>
                 <input
                   type="text"
                   value={newWarehouse.id}
@@ -618,51 +760,69 @@ const Settings = () => {
                   className="w-full rounded-md border border-gray-300 px-3 py-2 bg-gray-100 text-gray-500"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Warehouse Name *
+                </label>
                 <input
                   type="text"
                   value={newWarehouse.name}
-                  onChange={(e) => setNewWarehouse({ ...newWarehouse, name: e.target.value })}
+                  onChange={(e) =>
+                    setNewWarehouse({ ...newWarehouse, name: e.target.value })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter warehouse name"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Location *
+                </label>
                 <input
                   type="text"
                   value={newWarehouse.location}
-                  onChange={(e) => setNewWarehouse({ ...newWarehouse, location: e.target.value })}
+                  onChange={(e) =>
+                    setNewWarehouse({
+                      ...newWarehouse,
+                      location: e.target.value,
+                    })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter location"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
                 <select
                   value={newWarehouse.status}
-                  onChange={(e) => setNewWarehouse({ ...newWarehouse, status: e.target.value as 'active' | 'inactive' })}
+                  onChange={(e) =>
+                    setNewWarehouse({
+                      ...newWarehouse,
+                      status: e.target.value as "active" | "inactive",
+                    })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
-              
+
               <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                 <button
                   onClick={() => {
                     setShowEditWarehouse(false);
                     setEditingWarehouse(null);
                     setNewWarehouse({
-                      id: '',
-                      name: '',
-                      location: '',
-                      status: 'active'
+                      id: "",
+                      name: "",
+                      location: "",
+                      status: "active",
                     });
                   }}
                   className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
@@ -688,16 +848,18 @@ const Settings = () => {
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Edit User</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Edit User
+                </h3>
                 <button
                   onClick={() => {
                     setShowEditUser(false);
                     setEditingUser(null);
                     setNewUser({
-                      name: '',
-                      role: '',
-                      email: '',
-                      status: 'active'
+                      name: "",
+                      role: "",
+                      email: "",
+                      status: "active",
                     });
                   }}
                   className="text-gray-400 hover:text-gray-600"
@@ -706,68 +868,89 @@ const Settings = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
+                </label>
                 <input
                   type="text"
                   value={newUser.name}
-                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, name: e.target.value })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter full name"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Role *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Role *
+                </label>
                 <select
                   value={newUser.role}
-                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, role: e.target.value })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Role</option>
                   <option value="Production Manager">Production Manager</option>
                   <option value="R&D Specialist">R&D Specialist</option>
-                  <option value="Warehouse Supervisor">Warehouse Supervisor</option>
+                  <option value="Warehouse Supervisor">
+                    Warehouse Supervisor
+                  </option>
                   <option value="Quality Control">Quality Control</option>
                   <option value="Operations Manager">Operations Manager</option>
                 </select>
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address *
+                </label>
                 <input
                   type="email"
                   value={newUser.email}
-                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, email: e.target.value })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter email address"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
                 <select
                   value={newUser.status}
-                  onChange={(e) => setNewUser({ ...newUser, status: e.target.value as 'active' | 'inactive' })}
+                  onChange={(e) =>
+                    setNewUser({
+                      ...newUser,
+                      status: e.target.value as "active" | "inactive",
+                    })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
-              
+
               <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                 <button
                   onClick={() => {
                     setShowEditUser(false);
                     setEditingUser(null);
                     setNewUser({
-                      name: '',
-                      role: '',
-                      email: '',
-                      status: 'active'
+                      name: "",
+                      role: "",
+                      email: "",
+                      status: "active",
                     });
                   }}
                   className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
@@ -792,7 +975,9 @@ const Settings = () => {
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Add New User</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Add New User
+                </h3>
                 <button
                   onClick={() => setShowAddUser(false)}
                   className="text-gray-400 hover:text-gray-600"
@@ -801,58 +986,79 @@ const Settings = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
+                </label>
                 <input
                   type="text"
                   value={newUser.name}
-                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, name: e.target.value })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter full name"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Role *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Role *
+                </label>
                 <select
                   value={newUser.role}
-                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, role: e.target.value })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Role</option>
                   <option value="Production Manager">Production Manager</option>
                   <option value="R&D Specialist">R&D Specialist</option>
-                  <option value="Warehouse Supervisor">Warehouse Supervisor</option>
+                  <option value="Warehouse Supervisor">
+                    Warehouse Supervisor
+                  </option>
                   <option value="Quality Control">Quality Control</option>
                   <option value="Operations Manager">Operations Manager</option>
                 </select>
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address *
+                </label>
                 <input
                   type="email"
                   value={newUser.email}
-                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, email: e.target.value })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter email address"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
                 <select
                   value={newUser.status}
-                  onChange={(e) => setNewUser({ ...newUser, status: e.target.value as 'active' | 'inactive' })}
+                  onChange={(e) =>
+                    setNewUser({
+                      ...newUser,
+                      status: e.target.value as "active" | "inactive",
+                    })
+                  }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
-              
+
               <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                 <button
                   onClick={() => setShowAddUser(false)}

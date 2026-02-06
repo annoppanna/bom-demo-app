@@ -895,7 +895,7 @@ const RawMaterialManagement = () => {
                       {material.category}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      ${material.costPerUnit.toFixed(2)}/{material.unit}
+                      {material.costPerUnit.toFixed(2)} บาท/{material.unit}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {material.currentStock} {material.unit}

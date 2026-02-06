@@ -809,19 +809,19 @@ const RnD = () => {
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-600">ต้นทุนวัตถุดิบ:</span>
-                          <span>${formula.materialCost.toFixed(2)}</span>
+                          <span>{formula.materialCost.toFixed(2)}</span>
                         </div>
 
                         <div className="flex justify-between">
                           <span className="text-gray-600">
                             ต้นทุนกระบวนการ:
                           </span>
-                          <span>${formula.processCost.toFixed(2)}</span>
+                          <span>{formula.processCost.toFixed(2)}</span>
                         </div>
 
                         <div className="flex justify-between font-medium">
                           <span className="text-gray-600">ราคาขาย:</span>
-                          <span>${formula.sellingPrice.toFixed(2)}</span>
+                          <span>{formula.sellingPrice.toFixed(2)}</span>
                         </div>
 
                         <div className="flex justify-between text-green-600 font-medium">
